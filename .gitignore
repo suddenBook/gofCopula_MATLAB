@@ -1,0 +1,19 @@
+# MATLAB generated files
+*.asv
+*.autosave
+*.m~
+*.mex*
+codegen/
+sccprj/
+slprj/
+
+# Build and test output
+results/
+
+# Editor and operating-system metadata
+.DS_Store
+Thumbs.db
+.vscode/
+
+# MATLAB buildtool incremental cache
+.buildtool/

@@ -1,0 +1,6 @@
+Galambos A'' matches: True
+Galambos A' matches: True
+HR identity w*phi(z+) = (1-w)*phi(z-): True
+HR A' = Phi(z+) - Phi(z-): True
+HR A'' max |error| over grid (40-digit): 0
+tEV A' max |error| over grid (40-digit): 0

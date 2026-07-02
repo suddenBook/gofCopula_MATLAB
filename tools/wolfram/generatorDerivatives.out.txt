@@ -1,0 +1,11 @@
+Frank psi^(1) polylog identity max |error|: 0
+Frank psi^(2) polylog identity max |error|: 0
+Frank psi^(3) polylog identity max |error|: 0
+Frank psi^(4) polylog identity max |error|: 0
+AMH psi^(1) polylog identity max |error|: 0
+AMH psi^(2) polylog identity max |error|: 0
+AMH psi^(3) polylog identity max |error|: 0
+AMH psi^(4) polylog identity max |error|: 0
+Gumbel psi^(2) recurrence max |error|: 0
+Gumbel psi^(3) recurrence max |error|: 0
+Gumbel psi^(4) recurrence max |error|: 0

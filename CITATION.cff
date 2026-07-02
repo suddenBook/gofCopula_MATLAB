@@ -1,0 +1,68 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, please cite it using these metadata, and cite
+  the original R package and the methodology papers listed under references.
+type: software
+title: "gofCopula for MATLAB"
+version: 0.5.0
+date-released: "2026-07-02"
+license: GPL-3.0-or-later
+repository-code: "https://github.com/suddenBook/gofCopula_MATLAB"
+abstract: >-
+  MATLAB implementation of bootstrap goodness-of-fit tests for parametric
+  copula models, migrated from the R package gofCopula 0.4-3, with a
+  calibrated parametric-bootstrap mode, exact fast copula samplers, and
+  cross-language reference validation.
+authors:
+  - family-names: Liu
+    given-names: Huixiaqing
+    email: huixiaqingliu@outlook.com
+references:
+  - type: software
+    title: "gofCopula: Goodness-of-Fit Tests for Copulae"
+    version: "0.4-3"
+    repository: "https://cran.r-project.org/package=gofCopula"
+    license: GPL-3.0-or-later
+    authors:
+      - family-names: Okhrin
+        given-names: Ostap
+      - family-names: Trimborn
+        given-names: Simon
+      - family-names: Waltz
+        given-names: Martin
+  - type: article
+    title: "Goodness-of-fit tests for copulas: A review and a power study"
+    journal: "Insurance: Mathematics and Economics"
+    year: 2009
+    volume: 44
+    issue: 2
+    start: 199
+    end: 213
+    doi: 10.1016/j.insmatheco.2007.10.005
+    authors:
+      - family-names: Genest
+        given-names: Christian
+      - family-names: Rémillard
+        given-names: Bruno
+      - family-names: Beaudoin
+        given-names: David
+  - type: article
+    title: >-
+      Goodness-of-fit test for specification of semiparametric copula
+      dependence models
+    journal: "Journal of Econometrics"
+    year: 2016
+    volume: 193
+    issue: 1
+    start: 215
+    end: 233
+    doi: 10.1016/j.jeconom.2016.02.017
+    authors:
+      - family-names: Zhang
+        given-names: Shulin
+      - family-names: Okhrin
+        given-names: Ostap
+      - family-names: Zhou
+        given-names: Qian M.
+      - family-names: Song
+        given-names: Peter X.-K.
