@@ -1,0 +1,7 @@
+k normalizes the spherical PE density: True
+beta=1 gives k=(2Pi)^(-n/2) (Gaussian): True
+law of T=R^(2b) is Gamma(n/2b, scale 2): True
+E[(x'Sigma^-1 x)^beta] = n/beta: True
+A(d,1) = d/2 log(2 Pi E): True
+kappa(d,1) = A(d,1) - d*(1/2)log(2 Pi E) = 0: True
+margin of PE_2 is not PE_1 (nonzero residuals vs linear-in-|x|): {0.051196732348975704, 0.16827535182675524, 0.3571341482328876}

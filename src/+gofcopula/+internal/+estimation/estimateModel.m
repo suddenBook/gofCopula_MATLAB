@@ -20,7 +20,7 @@ arguments
     options.Upper {mustBeNumeric,mustBeReal} = []
 end
 
-wantDF = ismember(model.Family, ["t","tev"]) && model.EstimateDegreesOfFreedom;
+wantDF = ismember(model.Family, ["t","tev","powerexp"]) && model.EstimateDegreesOfFreedom;
 if ~model.EstimateTheta && ~wantDF
     fitted = model; method = "fixed"; return
 end
@@ -50,6 +50,11 @@ df = model.DegreesOfFreedom;
 wantTheta = model.EstimateTheta;
 wantDF = ismember(family, ["t","tev"]) && model.EstimateDegreesOfFreedom;
 dfBounds = [0.1, 1000];
+
+if family == "powerexp"
+    [theta, df] = powerExponential(model, u, lower, upper);
+    return
+end
 
 if ismember(family, ["normal","t"]) && d > 2 && model.Dispersion == "unstructured"
     [theta, df] = unstructuredElliptical(model, u, lower, upper, wantTheta, wantDF);
@@ -113,6 +118,64 @@ tauMatrix = corr(u, "Type", "Kendall", "Rows", "complete");
 start = sin(pi .* tauMatrix(tril(true(d), -1)).' ./ 2);
 start = min(max(start, lo + 1e-6), hi - 1e-6);
 theta = maximizeVector(@(p) negLog(model, u, p, model.DegreesOfFreedom), start, lo, hi);
+end
+
+function [theta, df] = powerExponential(model, u, lower, upper)
+% Power-exponential copula: correlation R by inversion of Kendall's tau
+% (elliptical, shape-independent), then shape beta by 1-D pseudo-likelihood
+% with R held fixed. df carries beta. Mirrors the two-step estimator in the
+% Power-Exponential validation pipeline.
+d = size(u, 2);
+if model.EstimateTheta
+    tauMatrix = corr(u, "Type", "Kendall", "Rows", "complete");
+    if d == 2
+        rho = sin(pi * tauMatrix(2,1) / 2);
+        if ~isempty(lower), rho = max(rho, lower(1)); end
+        if ~isempty(upper), rho = min(rho, upper(1)); end
+        theta = rho;
+    elseif model.Dispersion == "unstructured"
+        R = sin(pi .* tauMatrix ./ 2);
+        R(1:d+1:end) = 1;
+        [~, flag] = chol(R);
+        if flag ~= 0
+            R = nearestCorrelation(R);   % project the tau matrix to a valid correlation
+        end
+        theta = R(tril(true(d), -1)).';
+    else
+        % Exchangeable: one correlation from the mean pairwise Kendall tau.
+        meanTau = mean(tauMatrix(tril(true(d), -1)));
+        rho = sin(pi * meanTau / 2);
+        if ~isempty(lower), rho = max(rho, lower(1)); end
+        if ~isempty(upper), rho = min(rho, upper(1)); end
+        theta = rho;
+    end
+else
+    theta = model.Theta;
+end
+df = model.DegreesOfFreedom;
+if model.EstimateDegreesOfFreedom
+    betaBounds = [0.2, 5];
+    df = maximizeShape(@(b) negLog(model, u, theta, b), betaBounds(1), betaBounds(2));
+end
+end
+
+function R = nearestCorrelation(R)
+% Nearest correlation matrix by clipping negative eigenvalues and rescaling to
+% a unit diagonal (sufficient for a Kendall-tau starting value).
+R = (R + R.') / 2;
+[V, D] = eig(R);
+D = max(diag(D), 1e-8);
+R = V * diag(D) * V.';
+s = sqrt(diag(R));
+R = R ./ (s * s.');
+R = (R + R.') / 2;
+R(1:size(R,1)+1:end) = 1;
+end
+
+function b = maximizeShape(negative, lo, hi)
+% Golden-section search for the shape parameter (tight tolerance; runtime is
+% not a constraint and a precise optimum is preferred).
+b = fminbnd(negative, lo, hi, optimset("TolX", 1e-5, "Display", "off"));
 end
 
 function value = negLog(model, u, theta, df)
@@ -210,7 +273,7 @@ end
 
 function [lo, hi] = intrinsicDomain(family, d)
 switch family
-    case {"normal", "t", "tev"}
+    case {"normal", "t", "tev", "powerexp"}
         lo = -1; hi = 1;
     case "clayton"
         if d == 2, lo = -1; else, lo = 0; end

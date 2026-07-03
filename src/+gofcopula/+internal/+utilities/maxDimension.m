@@ -5,9 +5,12 @@ allFamilies = gofcopula.internal.utilities.families();
 if ~ismember(family, allFamilies)
     maxD = 0; return
 end
-wide = ["normal","t","clayton","gumbel","frank","joe"];
+wide = ["normal","t","clayton","gumbel","frank","joe","powerexp"];
 bivOnly = ["amh","galambos","huslerreiss","tawn","tev","fgm","plackett"];
-if ismember(testName,["gofCvM","gofKS","gofKendallCvM","gofKendallKS","gofCustomTest"])
+if ismember(testName,["gofCvM","gofKS"])
+    maxD = inf;
+    if ismember(family,bivOnly), maxD = 2; end
+elseif ismember(testName,["gofKendallCvM","gofKendallKS","gofCustomTest"])
     maxD = inf;
     if ismember(family,bivOnly), maxD = 2; end
 elseif startsWith(testName,"gofRosenblatt")
@@ -21,6 +24,7 @@ elseif testName == "gofWhite"
 elseif ismember(testName,["gofPIOSTn","gofPIOSRn"])
     if family == "t", maxD = 2;
     elseif ismember(family,["normal","clayton","gumbel","frank","joe"]), maxD = 3;
+    elseif family == "powerexp", maxD = inf;
     elseif ismember(family,["amh","galambos","fgm","plackett"]), maxD = 2;
     else, maxD = 0;
     end

@@ -11,12 +11,20 @@ classdef CopulaModel
         Rotation (1,1) double {mustBeMember(Rotation,[0,90,180,270])} = 0
     end
 
+    properties (Dependent, SetAccess = private)
+        Beta   % Power-exponential shape; alias of DegreesOfFreedom for family "powerexp".
+    end
+
     methods
+        function value = get.Beta(obj)
+            value = obj.DegreesOfFreedom;
+        end
+
         function obj = CopulaModel(family, options)
             arguments
                 family {mustBeTextScalar}
                 options.Theta {mustBeNumeric,mustBeReal,mustBeFinite} = 0.5
-                options.DegreesOfFreedom (1,1) {mustBeNumeric,mustBeReal,mustBeFinite,mustBePositive} = 4
+                options.DegreesOfFreedom (1,1) {mustBeNumeric,mustBeReal} = NaN
                 options.EstimateTheta (1,1) logical = true
                 options.EstimateDegreesOfFreedom (1,1) logical = true
                 options.Dispersion {mustBeTextScalar} = "exchangeable"
@@ -32,7 +40,17 @@ classdef CopulaModel
             mustBeMember(options.Rotation, [0,90,180,270]);
             obj.Family = family;
             obj.Theta = double(options.Theta(:).');
-            obj.DegreesOfFreedom = double(options.DegreesOfFreedom);
+            degreesOfFreedom = options.DegreesOfFreedom;
+            if isnan(degreesOfFreedom)
+                % Default second scalar: shape beta = 1 for power-exponential
+                % (recovers the Gaussian copula); 4 degrees of freedom otherwise.
+                if family == "powerexp"
+                    degreesOfFreedom = 1;
+                else
+                    degreesOfFreedom = 4;
+                end
+            end
+            obj.DegreesOfFreedom = double(degreesOfFreedom);
             obj.EstimateTheta = options.EstimateTheta;
             obj.EstimateDegreesOfFreedom = options.EstimateDegreesOfFreedom;
             obj.Dispersion = string(dispersion);

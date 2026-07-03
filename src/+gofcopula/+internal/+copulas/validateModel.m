@@ -24,7 +24,7 @@ if dimension > 2 && ismember(family, bivariateOnly)
         "The %s copula is implemented only in dimension two.", family);
 end
 
-if ismember(family, ["normal", "t"])
+if ismember(family, ["normal", "t", "powerexp"])
     gofcopula.internal.copulas.correlationMatrix(theta, dimension, dispersion);
     return
 end

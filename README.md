@@ -62,7 +62,9 @@ The `+gofcopula` directory is MATLAB's package namespace. Public functions are c
 | `gofcopula.gofPIOSTn`, `gofcopula.gofPIOSRn` | Pseudo in-and-out-of-sample tests |
 | `gofcopula.CopulaTestTable` | Query supported family/test dimensions |
 
-See [Getting Started](docs/GettingStarted.m), the [R-to-MATLAB migration guide](docs/MigrationGuide.md), the [capability matrix](docs/CapabilityMatrix.md), and the [dataset guide](docs/Datasets.md).
+New to the package? Start with the **[User Guide](docs/UserGuide.md)** — a beginner-oriented manual covering usage, every option, and parameter tuning.
+
+See also [Getting Started](docs/GettingStarted.m), the [R-to-MATLAB migration guide](docs/MigrationGuide.md), the [capability matrix](docs/CapabilityMatrix.md), the [Power-Exponential copula guide](docs/PowerExponential.md), and the [dataset guide](docs/Datasets.md).
 
 ## Development
 

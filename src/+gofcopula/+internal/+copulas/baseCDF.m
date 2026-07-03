@@ -22,6 +22,11 @@ switch family
     case "t"
         R = gofcopula.internal.copulas.correlationMatrix(theta, dimension, dispersion);
         C(active) = mvtcdf(tinv(X, df), R, df);
+    case "powerexp"
+        % Elliptical power-exponential copula; df carries the shape beta. No
+        % closed-form CDF, so it is estimated by Monte Carlo (deterministic seed).
+        R = gofcopula.internal.copulas.correlationMatrix(theta, dimension, dispersion);
+        C(active) = gofcopula.internal.elliptical.peCopulaCDF(X, R, df);
     case {"clayton", "gumbel", "frank", "joe", "amh"}
         phi = gofcopula.internal.copulas.archimedean("phi", family, X, theta);
         C(active) = gofcopula.internal.copulas.archimedean( ...

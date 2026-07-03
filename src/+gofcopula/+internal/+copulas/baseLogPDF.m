@@ -25,6 +25,10 @@ switch family
         logMarginal = gammaln((df + 1)/2) - gammaln(df/2) ...
             - 0.5*log(df*pi) - (df + 1)/2 .* log1p(z.^2 ./ df);
         logDensity = logJoint - sum(logMarginal, 2);
+    case "powerexp"
+        % Elliptical power-exponential copula; df carries the shape beta.
+        R = gofcopula.internal.copulas.correlationMatrix(theta, dimension, dispersion);
+        logDensity = gofcopula.internal.elliptical.peCopulaLogPDF(X, R, df);
     case {"clayton", "gumbel", "frank", "joe", "amh"}
         phi = gofcopula.internal.copulas.archimedean("phi", family, X, theta);
         logPhiPrime = gofcopula.internal.copulas.archimedean( ...

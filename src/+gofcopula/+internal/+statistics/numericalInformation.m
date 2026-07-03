@@ -47,10 +47,16 @@ end
 end
 
 function theta=parameterVector(model)
+% Power-exponential appends the shape beta (stored in DegreesOfFreedom) so the
+% information matrix accounts for its estimation, as White does for Student df.
 if isa(model,"gofcopula.CopulaModel")
     theta=double(model.Theta(:).');
+    if model.Family == "powerexp", theta=[theta,model.DegreesOfFreedom]; end
 elseif isstruct(model) && isfield(model,"Theta")
     theta=double(model.Theta(:).');
+    if isfield(model,'Family') && string(model.Family) == "powerexp"
+        theta=[theta,model.DegreesOfFreedom];
+    end
 else
     theta=[];
 end

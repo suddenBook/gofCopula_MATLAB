@@ -21,7 +21,7 @@ pairTaus = tauMatrix(tril(true(d), -1));
 tau = mean(pairTaus);
 
 switch family
-    case {"normal", "t"}
+    case {"normal", "t", "powerexp"}
         if d > 2 && model.Dispersion == "unstructured"
             theta = sin(pi .* pairTaus(:).' ./ 2);
         else

@@ -14,6 +14,8 @@ switch family
         % Already canonical.
     case {"huslerreiss", "hueslerreiss"}
         family = "huslerreiss";
+    case {"powerexp", "pe", "powerexponential"}
+        family = "powerexp";
     otherwise
         error("gofcopula:copula:UnknownFamily", ...
             "Unknown copula family '%s'.", family);

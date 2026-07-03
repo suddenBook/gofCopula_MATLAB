@@ -89,10 +89,10 @@ end
 function theta=parameterVector(model)
 if isa(model,"gofcopula.CopulaModel")
     theta=double(model.Theta(:).');
-    if model.Family == "t", theta=[theta,model.DegreesOfFreedom]; end
+    if ismember(model.Family,["t","powerexp"]), theta=[theta,model.DegreesOfFreedom]; end
 elseif isstruct(model) && isfield(model,"Theta")
     theta=double(model.Theta(:).');
-    if isfield(model,'Family') && string(model.Family) == "t"
+    if isfield(model,'Family') && ismember(string(model.Family),["t","powerexp"])
         theta=[theta,model.DegreesOfFreedom];
     end
 else
@@ -170,7 +170,7 @@ end
 function candidate=modelWithParameters(model,parameters)
 if isa(model,"gofcopula.CopulaModel")
     df=model.DegreesOfFreedom; theta=parameters;
-    if model.Family == "t", theta=parameters(1:end-1); df=parameters(end); end
+    if ismember(model.Family,["t","powerexp"]), theta=parameters(1:end-1); df=parameters(end); end
     candidate=gofcopula.CopulaModel(model.Family,Theta=theta, ...
         DegreesOfFreedom=df,EstimateTheta=false, ...
         EstimateDegreesOfFreedom=false,Dispersion=model.Dispersion, ...

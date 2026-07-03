@@ -12,7 +12,7 @@ classdef publicApiTest < matlab.unittest.TestCase
     methods (Test)
         function capabilityTableHasExpectedShape(testCase)
             actual=gofcopula.CopulaTestTable();
-            testCase.verifySize(actual,[16,13]);
+            testCase.verifySize(actual,[16,14]);
         end
 
         function claytonSupportsKernelInTwoDimensions(testCase)

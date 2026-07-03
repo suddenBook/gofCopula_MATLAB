@@ -12,7 +12,11 @@ function U = randomCore(family, n, dimension, theta, df, dispersion, rotation, s
 %   Near-independence parameters short-circuit to uniform draws. All
 %   randomness comes from STREAM ([] uses the global stream).
 
-if ismember(family, ["normal", "t"])
+if family == "powerexp"
+    % Elliptical power-exponential copula; df carries the shape beta.
+    R = gofcopula.internal.copulas.correlationMatrix(theta, dimension, dispersion);
+    U = gofcopula.internal.elliptical.peCopulaRandom(n, R, df, stream);
+elseif ismember(family, ["normal", "t"])
     R = gofcopula.internal.copulas.correlationMatrix(theta, dimension, dispersion);
     L = chol(R, "lower");
     z = normalRandom(stream, n, dimension) * L.';
