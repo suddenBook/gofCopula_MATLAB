@@ -46,9 +46,11 @@
 %   gofcopula.copulaRandom      - Copula random number generation.
 %   gofcopula.rosenblatt        - Sequential Rosenblatt transform.
 %   gofcopula.runTest           - Run one bootstrap test (advanced).
+%   gofcopula.runTestSerial     - Serial-dependence-robust bootstrap test.
 %
 % Documentation
 %   ../docs/GettingStarted.m    - Executable introduction.
 %   ../docs/MigrationGuide.md   - R-to-MATLAB API mapping.
 %   ../docs/CapabilityMatrix.md - Family, test, and dimension support.
 %   ../docs/Numerics.md         - Precision and NumericMode semantics.
+%   ../docs/SerialDependence.md - Serial-dependence-robust bootstrap.

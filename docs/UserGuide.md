@@ -365,15 +365,19 @@ to machine precision at β = 1.
 
 **Important assumption:** the parametric bootstrap treats the rows of `x` as
 **independent**. For serially dependent data (e.g. raw high-frequency returns,
-EEG), the p-values can be miscalibrated. Two remedies:
+EEG), the p-values can be miscalibrated. Remedies:
 
-1. **Pre-whiten the margins** (recommended for financial data): fit an
-   ARMA–GARCH model per column and feed the standardized residuals to the test.
-   The bundled `Banks`/`CryptoCurrencies` datasets are already volatility-adjusted
-   this way.
-2. **Block bootstrap:** generate your own block-resampled replicate array of size
-   `n×d×M` and pass it via `runTest(..., BootstrapSamples=yourArray)`, which
-   bypasses the i.i.d. simulation.
+1. **Use `gofcopula.runTestSerial`** (built-in, recommended): it decimates the
+   data to near-independence and then runs the ordinary bootstrap on the
+   sub-sample — family-agnostic, one call. For the `normal` copula,
+   `Method="phase"` instead calibrates against coherent phase-randomized
+   surrogates and keeps every row (no power loss). See `docs/SerialDependence.md`.
+2. **Pre-whiten the margins** (common for financial data): fit an ARMA–GARCH
+   model per column and feed the standardized residuals to the test. The bundled
+   `Banks`/`CryptoCurrencies` datasets are already volatility-adjusted this way.
+3. **Block bootstrap by hand:** generate your own block-resampled replicate array
+   of size `n×d×M` and pass it via `runTest(..., BootstrapSamples=yourArray)`.
+   `runTestSerial` automates the correct version of this for you.
 
 Quick self-check with the Econometrics Toolbox (per column): `lbqtest` for serial
 correlation and `archtest` for volatility clustering. If both are insignificant,
